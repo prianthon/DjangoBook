@@ -1,4 +1,5 @@
-from django.http import Http404, HttpResponse
+from django.template import Template, Context
+from django.http import HttpResponse
 import datetime
 
 def hello(request):
@@ -6,7 +7,10 @@ def hello(request):
 
 def current_datetime(request):
     now = datetime.datetime.now()
-    html = "It is now %s." % now
+    # Simple way of using templates from the filesystem
+    # This is BAD because it doesn't account for missing files!
+    fp = open('/home/djangouser/templates/mytemplates.html')
+    html = t.render(Context({'current_datetime': now}))
     return HttpResponse(html)
 
 def hours_ahead(request, offset):
